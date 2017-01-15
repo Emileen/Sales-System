@@ -66,15 +66,15 @@ public class Main {
                 })
         );
 
-        Spark.get("/order",
+        Spark.get("/cartItem",
                 ((request, response) -> {
             HashMap m = new HashMap();
 
-            return new ModelAndView(m,"order.html");
+            return new ModelAndView(m,"cartItem.html");
 
         }));
 
-        Spark.post("/order",
+        Spark.post("/cartItem",
                 ((request, response) -> {
                     Item.createItem(conn,
                             request.queryParams("name"),
