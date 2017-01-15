@@ -45,6 +45,12 @@ public class Order {
         stmt.execute("CREATE TABLE IF NOT EXISTS orders (id IDENTITY, user_id int)");
     }
 
+    public static void createItemId(Connection conn, User user ) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO orders values (NULL, ?)");
+        stmt.setInt(1, user.getId() );
+        stmt.execute();
+    }
+
 
 
 

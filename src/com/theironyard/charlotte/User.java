@@ -64,11 +64,7 @@ public class User {
         stmt.execute();
     }
 
-    public static void createItemId(Connection conn, User user ) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO orders values (NULL, ?)");
-        stmt.setInt(1, user.getId() );
-        stmt.execute();
-    }
+
 
 
 
