@@ -64,6 +64,11 @@ public class Main {
                 })
         );
 
+        Spark.post("/order", ((request, response) -> {
+
+            return "";
+        }));
+
     }
 }
 

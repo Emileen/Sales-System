@@ -1,6 +1,7 @@
 package com.theironyard.charlotte;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -43,4 +44,7 @@ public class Order {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS orders (id IDENTITY, user_id int)");
     }
+
+
+
 }

@@ -1,6 +1,7 @@
 package com.theironyard.charlotte;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -75,5 +76,13 @@ public class Item {
     public static void creatTable(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS items (id IDENTITY, name VARCHAR, quantity int, price double, order_id int)");
+    }
+
+    public static void createItem(Connection conn, String name, int quantity,double price) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO restaurants VALUES (NULL, ?, ?, ?)");
+        stmt.setString(1, name);
+        stmt.setInt(2,quantity);
+        stmt.setDouble(3,price);
+        stmt.execute();
     }
 }
