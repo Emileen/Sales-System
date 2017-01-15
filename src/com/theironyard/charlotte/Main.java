@@ -20,6 +20,7 @@ public class Main {
         HashMap<String, User> users = new HashMap<>();
 
 
+
         Server.createWebServer().start();
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         User.creatTable(conn);
@@ -42,7 +43,7 @@ public class Main {
                         return new ModelAndView(m, "login.html");
                     } else {
                         User.insertUser(conn,request.queryParams("name"),request.queryParams("email"));
-                        return new ModelAndView(m, "home.html");
+                        return new ModelAndView(m, "order.html");
                     }
                 }), new MustacheTemplateEngine()
         );
@@ -54,17 +55,31 @@ public class Main {
                     if (user == null) {
                         User.insertUser(conn, request.queryParams("name"),
                                 request.queryParams("email"));
+                       // User.createItemId(conn,request.queryParams("id"));
 
                     }
                     Session session = request.session();
                     session.attribute("name", name);
-                    response.redirect("/");
+                    response.redirect("/order");
                     return "";
 
                 })
         );
 
-        Spark.post("/order", ((request, response) -> {
+        Spark.get("/order",
+                ((request, response) -> {
+            HashMap m = new HashMap();
+
+            return new ModelAndView(m,"order.html");
+
+        }));
+
+        Spark.post("/order",
+                ((request, response) -> {
+                    Item.createItem(conn,
+                            request.queryParams("name"),
+                            Integer.valueOf(request.queryParams("quantity")),
+                            Double.valueOf(request.queryParams("price")));
 
             return "";
         }));
