@@ -40,6 +40,7 @@ public class Main {
                     //User user = users.get(userName);
 
                     if (user == null) {
+                       // return new ModelAndView(m, "login.html");
                         return new ModelAndView(m, "login.html");
                     } else {
                         User.insertUser(conn,request.queryParams("name"),request.queryParams("email"));
@@ -66,23 +67,36 @@ public class Main {
                 })
         );
 
-        Spark.get("/cartItem",
-                ((request, response) -> {
-            HashMap m = new HashMap();
-
-            return new ModelAndView(m,"cartItem.html");
-
-        }));
-
-        Spark.post("/cartItem",
+        Spark.post("/order",
                 ((request, response) -> {
                     Item.createItem(conn,
                             request.queryParams("name"),
                             Integer.valueOf(request.queryParams("quantity")),
                             Double.valueOf(request.queryParams("price")));
 
-            return "";
-        }));
+                    return "";
+                }));
+
+        Spark.get("/order",
+                ((request, response) -> {
+            HashMap m = new HashMap();
+
+            return new ModelAndView(m,"order.html");
+
+        }),
+                new MustacheTemplateEngine()
+
+        );
+
+        Spark.get("/home",
+                ((request, response) -> {
+            HashMap m = new HashMap();
+            return new ModelAndView(m,"Home.html");
+
+        }),
+                new MustacheTemplateEngine());
+
+
 
     }
 }

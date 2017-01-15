@@ -79,7 +79,7 @@ public class Item {
     }
 
     public static void createItem(Connection conn, String name, int quantity,double price) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO restaurants VALUES (NULL, ?, ?, ?)");
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO items VALUES (NULL, ?, ?, ?)");
         stmt.setString(1, name);
         stmt.setInt(2,quantity);
         stmt.setDouble(3,price);
