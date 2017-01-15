@@ -1,25 +1,31 @@
 package com.theironyard.charlotte;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Created by emileenmarianayagam on 1/12/17.
  */
 public class User {
     Integer id;
-    String email;
     String name;
+    String email;
+
 
     public User() {
     }
 
-    public User(String email, String name) {
-        this.email = email;
+    public User(Integer id, String name, String email) {
+        this.id = id;
         this.name = name;
+        this.email = email;
     }
 
-    public User(Integer id, String email, String name) {
-        this.id = id;
-        this.email = email;
+    public User(String name, String email) {
         this.name = name;
+        this.email = email;
     }
 
     public Integer getId() {
@@ -30,6 +36,14 @@ public class User {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -38,12 +52,16 @@ public class User {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public static void creatTable(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        stmt.execute("CREATE TABLE IF NOT EXISTS users (id IDENTITY, name VARCHAR, email VARCHAR)");
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public static void insertUser(Connection conn, String name, String email) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement ("insert into users values (NULL, ?, ?)");
+        stmt.setString(1,name);
+        stmt.setString(2,email);
+        stmt.execute();
     }
 
 }

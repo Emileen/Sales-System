@@ -1,5 +1,9 @@
 package com.theironyard.charlotte;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 /**
  * Created by emileenmarianayagam on 1/12/17.
  */
@@ -66,5 +70,10 @@ public class Item {
 
     public void setOrderId(int orderId) {
         this.orderId = orderId;
+    }
+
+    public static void creatTable(Connection conn) throws SQLException {
+        Statement stmt = conn.createStatement();
+        stmt.execute("CREATE TABLE IF NOT EXISTS items (id IDENTITY, name VARCHAR, quantity int, price double, order_id int)");
     }
 }
