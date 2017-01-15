@@ -34,8 +34,8 @@ public class Main {
                 ((request, response) -> {
                     HashMap m = new HashMap();
 
-                    //Session session = request.session();
-                    //String userName = session.attribute("userName");
+                    Session session = request.session();
+                    String userName = session.attribute("userName");
 
                     //User user = users.get(userName);
 
