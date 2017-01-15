@@ -6,19 +6,63 @@ import spark.Session;
 import spark.Spark;
 import spark.template.mustache.MustacheTemplateEngine;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Main {
+    private static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection("jdbc:h2:./main");
+    }
     private static void initializeDatabase() throws SQLException {
-        Connection conn = DriverManager.getConnection("jdbc:h2:./main");
-        Statement stmt = conn.createStatement();
+        Statement stmt = getConnection().createStatement();
         stmt.execute("create table if not exists users  (id identity, name varchar, email varchar)");
         stmt.execute("create table if not exists orders (id identity, user_id int)");
         stmt.execute("create table if not exists items  (id identity, name varchar, quantity int, price double, order_id int)");
+    }
+
+    private static List<Order> getOrdersForUser(Integer userId) throws SQLException {
+        PreparedStatement stmt = getConnection().prepareStatement("select * from orders where user_id = ?");
+
+        // so on and so forth.
+        return new ArrayList<>();
+    }
+
+    private static User getUserById(Integer id) throws SQLException {
+        User user = null;
+
+        if (id != null) {
+            PreparedStatement stmt = getConnection().prepareStatement("select * from users where id = ?");
+
+            stmt.setInt(1, id);
+            ResultSet results = stmt.executeQuery();
+
+            if (results.next()) {
+                user = new User(id, results.getString("name"), results.getString("email"));
+
+                user.setOrders(getOrdersForUser(id));
+            }
+        }
+
+        return user;
+    }
+
+    private static Integer getUserIdByEmail(String email) throws SQLException {
+        Integer userId = null;
+
+        if (email != null) {
+            PreparedStatement stmt = getConnection().prepareStatement("select * from users where email = ?");
+            stmt.setString(1, email);
+
+            ResultSet results = stmt.executeQuery();
+
+            if (results.next()) {
+                userId = results.getInt("id");
+            }
+        }
+
+        return userId;
     }
 
     public static void main(String[] args) throws SQLException {
@@ -28,10 +72,13 @@ public class Main {
             HashMap model = new HashMap();
             Session session = request.session();
 
-            Integer userId = session.attribute("user_id");
-            if (userId != null) {
-                // look up user details by id
+            User current = getUserById(session.attribute("fancy_user_id"));
+
+            if (current != null) {
                 // pass user into model
+                model.put("user", current);
+
+
                 return new ModelAndView(model, "home.html");
             } else {
                 return new ModelAndView(model, "login.html");
@@ -42,8 +89,13 @@ public class Main {
             String email = request.queryParams("email");
 
             // look up the user by email address
-            // if the user exists, save the id in session.
+            Integer userId = getUserIdByEmail(email);
 
+            // if the user exists, save the id in session.
+            if (userId != null) {
+                Session session = request.session();
+                session.attribute("fancy_user_id", userId);
+            }
             response.redirect("/");
             return "";
         });
