@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * Created by emileenmarianayagam on 1/12/17.
@@ -78,6 +79,7 @@ public class Item {
         stmt.execute("CREATE TABLE IF NOT EXISTS items (id IDENTITY, name VARCHAR, quantity int, price double, order_id int)");
     }
 
+    //create the item that the user picks
     public static void createItem(Connection conn, String name, int quantity,double price) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO items VALUES (NULL, ?, ?, ?)");
         stmt.setString(1, name);
@@ -85,4 +87,6 @@ public class Item {
         stmt.setDouble(3,price);
         stmt.execute();
     }
+
+
 }

@@ -1,9 +1,7 @@
 package com.theironyard.charlotte;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by emileenmarianayagam on 1/12/17.
@@ -64,7 +62,15 @@ public class User {
         stmt.execute();
     }
 
+    public static ArrayList<Item> listOfItems(Connection conn) throws SQLException{
+        ArrayList<Item> items = new ArrayList<>();
+        Statement stmt = conn.createStatement();
+        ResultSet results = stmt.executeQuery("select * from items");
+        while (results.next()){
 
+        }
+        return items;
+    }
 
 
 

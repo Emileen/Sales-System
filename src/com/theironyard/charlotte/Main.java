@@ -16,17 +16,18 @@ import java.util.HashMap;
 public class Main {
     static User user;
 
+    private static Connection getConnection() throws SQLException{
+        return DriverManager.getConnection("jdbc:h2:./main");
+    }
+
     public static void main(String[] args) throws SQLException {
         HashMap<String, User> users = new HashMap<>();
 
-
-
         Server.createWebServer().start();
-        Connection conn = DriverManager.getConnection("jdbc:h2:./main");
-        User.creatTable(conn);
-        Order.creatTable(conn);
-        Item.creatTable(conn);
-        //ArrayList<User> user = new ArrayList<>();
+        //Connection conn = DriverManager.getConnection("jdbc:h2:./main");
+        User.creatTable(getConnection());
+        Order.creatTable(getConnection());
+        Item.creatTable(getConnection());
 
 
         Spark.init();
@@ -35,7 +36,7 @@ public class Main {
                     HashMap m = new HashMap();
 
                     Session session = request.session();
-                    String userName = session.attribute("userName");
+                    String userName = session.attribute("name");
 
                     //User user = users.get(userName);
 
@@ -43,7 +44,7 @@ public class Main {
                        // return new ModelAndView(m, "login.html");
                         return new ModelAndView(m, "login.html");
                     } else {
-                        User.insertUser(conn,request.queryParams("name"),request.queryParams("email"));
+                        User.insertUser(getConnection(),request.queryParams("name"),request.queryParams("email"));
                         return new ModelAndView(m, "order.html");
                     }
                 }), new MustacheTemplateEngine()
@@ -54,7 +55,7 @@ public class Main {
                     String name = request.queryParams("name");
                     User user = users.get(name);
                     if (user == null) {
-                        User.insertUser(conn, request.queryParams("name"),
+                        User.insertUser(getConnection(), request.queryParams("name"),
                                 request.queryParams("email"));
                        // User.createItemId(conn,request.queryParams("id"));
 
@@ -69,7 +70,7 @@ public class Main {
 
         Spark.post("/order",
                 ((request, response) -> {
-                    Item.createItem(conn,
+                    Item.createItem(getConnection(),
                             request.queryParams("name"),
                             Integer.valueOf(request.queryParams("quantity")),
                             Double.valueOf(request.queryParams("price")));

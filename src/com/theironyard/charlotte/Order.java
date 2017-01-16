@@ -4,13 +4,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * Created by emileenmarianayagam on 1/12/17.
  */
 public class Order {
-    Integer id;
-    int userId;
+    private Integer id;
+    private int userId;
+
 
     public Order() {
     }
