@@ -5,6 +5,34 @@
     <title>Order</title>
 </head>
 <body>
+<ul>
+    <!--#markes a list-->
+    <!--creates a list of items that have id,name,cuisine,location,rating-->
+    {{#items}}
+    <!--ID is entered in her so that it can be displayed on the page # this is taken from the SQL table-->
+
+    <li>ID: {{id}}, Name: {{name}}, quantity: {{quantity}}, price: {{price}}</li>
+    <!--<li>Name: {{name}}</li>
+    <li>quantity: {{quantity}}</li>
+    <li>price: {{price}}</li>
+    <li>Order_Id: {{order_Id}}</li>-->
+
+
+    <!--<li>ID: {{id}}</li>
+    <li>Name: {{name}}</li>
+    <li>quantity: {{quantity}}</li>
+    <li>price: {{price}}</li>
+    <li>Order_Id: {{order_Id}}</li>-->
+
+
+    <!-- //allow us to edit the restaurant class-->
+    Click To Edit:
+    <a href="/restaurants/{{id}}">Edit</a>
+    {{/items}}
+
+
+</ul>
+
 
 <h1>Welcome to Your Shopping Experience</h1>
 
@@ -21,7 +49,7 @@
     <label for ="name">Price:</label>
     <input type="text" placehold = "Enter price" id = price name="price">
 
-    <button type="submit">Login</button>
+    <button type="submit">Submit</button>
 </form>
 
 </body>

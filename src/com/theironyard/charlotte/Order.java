@@ -12,6 +12,7 @@ import java.util.List;
 public class Order {
     private Integer id;
     private int userId;
+    private List<Item> items;
 
 
     public Order() {
@@ -25,6 +26,8 @@ public class Order {
     public Order(int userId) {
         this.userId = userId;
     }
+
+
 
     public Integer getId() {
         return id;

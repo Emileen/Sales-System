@@ -79,13 +79,28 @@ public class Item {
         stmt.execute("CREATE TABLE IF NOT EXISTS items (id IDENTITY, name VARCHAR, quantity int, price double, order_id int)");
     }
 
+    public static void orderId(Connection conn, Integer id) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT SYSTEM_SEQUENCE_6A3466A0_3E67_4737_9246_65315753FD8C.currval FROM dual;");
+        stmt.setInt(1,id);
+    }
+
+    public static void createItemId(Connection conn, User user ) throws SQLException {
+        int id = User.selectId(conn,user.name, user.email );
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO orders values (NULL, ?)");
+        stmt.setInt(1, id );
+        stmt.execute();
+    }
+
+
     //create the item that the user picks
-    public static void createItem(Connection conn, String name, int quantity,double price) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO items VALUES (NULL, ?, ?, ?)");
+    public static void createItem(Connection conn, String name, int quantity, double price) throws SQLException {
+        Integer id = User.selectId(conn,"name", "email" );
+        System.out.println(id);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO items VALUES (NULL, ?, ?, ?,?)");
         stmt.setString(1, name);
         stmt.setInt(2,quantity);
         stmt.setDouble(3,price);
-        stmt.execute();
+        stmt.setInt(4,id);
     }
 
 
